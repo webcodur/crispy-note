@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Supabase Article 조회</title>
+		<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+	</head>
+	<body>
+		<h1>Article 목록</h1>
+		<button onclick="getAllArticles()">전체 조회</button>
+		<button onclick="getLatestArticles()">최신순 조회</button>
+		<button onclick="getArticleById()">ID로 조회</button>
+
+		<div id="result"></div>
+
+		<script>
+			// Supabase 초기화
+			const supabaseUrl = 'https://zerkxbzbvgouryeowdho.supabase.co';
+			const supabaseKey =
+				'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inplcmt4YnpidmdvdXJ5ZW93ZGhvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE5ODA2NTQsImV4cCI6MjA3NzU1NjY1NH0.FGonDtZwfdsKr2pv74lyYABw8Uqw0yrVUALMgfD_lxc';
+			const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+			// 전체 조회
+			async function getAllArticles() {
+				const { data, error } = await supabase.from('article').select('*');
+
+				displayResult(data, error);
+			}
+
+			// 최신순 조회
+			async function getLatestArticles() {
+				const { data, error } = await supabase
+					.from('article')
+					.select('*')
+					.order('created_at', { ascending: false })
+					.limit(10);
+				displayResult(data, error);
+			}
+
+			// ID로 조회
+			async function getArticleById() {
+				const id = prompt('조회할 ID 입력:');
+				const { data, error } = await supabase
+					.from('article')
+					.select('*')
+					.eq('id', id)
+					.single();
+				displayResult(data, error);
+			}
+
+			// 결과 표시
+			function displayResult(data, error) {
+				const resultDiv = document.getElementById('result');
+				if (error) {
+					resultDiv.innerHTML = `<p style="color: red;">에러: ${error.message}</p>`;
+					return;
+				}
+				resultDiv.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+			}
+		</script>
+	</body>
+</html>

@@ -1,0 +1,128 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary: #F5F1E8;
+  --color-secondary: #2C2416;
+  --color-accent: #FF6B6B;
+  --color-text: #000000;
+  --color-background: #FEFEFE;
+}
+
+@layer base {
+  body {
+    @apply antialiased;
+    background-color: var(--color-background);
+    color: var(--color-text);
+  }
+}
+
+@layer components {
+  .paper-texture {
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='5' /%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23paper)' opacity='0.05'/%3E%3C/svg%3E");
+  }
+
+  .corkboard-texture {
+    background-color: #D4A574;
+    background-image: 
+      repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(139, 115, 85, 0.1) 2px, rgba(139, 115, 85, 0.1) 4px),
+      url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='cork'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' /%3E%3CfeColorMatrix type='saturate' values='0.3'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23cork)' opacity='0.3'/%3E%3C/svg%3E");
+    @apply border-2 border-secondary/30;
+  }
+
+  .memo-card {
+    @apply bg-white shadow-memo-card hover:shadow-paper-hover transition-all duration-200;
+    @apply border border-secondary/10 rounded-lg p-4;
+    transform-style: preserve-3d;
+  }
+
+  .memo-card:hover {
+    @apply -translate-y-1;
+  }
+
+  .crumple-animation {
+    animation: crumple 0.8s ease-in-out forwards;
+  }
+
+  .cursor-pin,
+  .cursor-pin * {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ctext x='4' y='28' font-size='24'%3E📌%3C/text%3E%3C/svg%3E") 4 4, pointer !important;
+  }
+
+  .cursor-hammer,
+  .cursor-hammer * {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ctext x='4' y='28' font-size='24'%3E🔨%3C/text%3E%3C/svg%3E") 4 4, pointer !important;
+  }
+
+  .cursor-lighter,
+  .cursor-lighter * {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ctext x='4' y='28' font-size='24'%3E🔦%3C/text%3E%3C/svg%3E") 4 4, pointer !important;
+  }
+
+  @keyframes hammer-swing {
+    0% { transform: rotate(0deg); }
+    50% { transform: rotate(-15deg); }
+    100% { transform: rotate(0deg); }
+  }
+
+  .hammer-active .cursor-hammer,
+  .hammer-active .cursor-hammer * {
+    animation: hammer-swing 0.3s ease-out;
+  }
+
+  .corkboard-section {
+    background-color: #C4A57B;
+    background-image: 
+      repeating-linear-gradient(0deg, rgba(139, 115, 85, 0.15) 0px, rgba(139, 115, 85, 0.15) 1px, transparent 1px, transparent 100px),
+      repeating-linear-gradient(90deg, rgba(139, 115, 85, 0.15) 0px, rgba(139, 115, 85, 0.15) 1px, transparent 1px, transparent 100px),
+      url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='corkboard'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.5' numOctaves='6' /%3E%3CfeColorMatrix type='saturate' values='0.4'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23corkboard)' opacity='0.4'/%3E%3C/svg%3E");
+    @apply rounded-xl shadow-lg border-4 border-secondary/40 p-6 mb-8;
+  }
+
+  .folder-card {
+    @apply transition-all duration-200;
+    transform-style: preserve-3d;
+  }
+
+  @keyframes shatter {
+    0% { 
+      transform: scale(1) rotate(0deg); 
+      opacity: 1;
+    }
+    100% { 
+      transform: scale(0.3) rotate(15deg); 
+      opacity: 0;
+    }
+  }
+
+  @keyframes burn {
+    0% { 
+      opacity: 1;
+    }
+    100% { 
+      opacity: 0;
+    }
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0) rotate(0deg); }
+    33% { transform: translateX(-3px) rotate(-1deg); }
+    66% { transform: translateX(3px) rotate(1deg); }
+  }
+
+  .shatter-animation {
+    animation: shake 0.1s ease-in-out 2, shatter 0.3s 0.2s ease-out forwards;
+  }
+
+  .burn-animation {
+    animation: burn 0.8s ease-out forwards;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
